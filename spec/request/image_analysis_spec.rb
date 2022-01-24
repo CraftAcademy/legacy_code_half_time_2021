@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 RSpec.describe Api::AnalysesController, type: :request do
   describe 'Image analysiss' do
