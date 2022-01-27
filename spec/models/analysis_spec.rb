@@ -4,5 +4,4 @@ RSpec.describe Analysis, type: :model do
   it { is_expected.to have_db_column :request_ip }
   it { is_expected.to have_db_column :results }
 
-  
 end
