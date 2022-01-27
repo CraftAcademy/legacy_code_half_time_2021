@@ -10,7 +10,6 @@ gem 'bootsnap', '>= 1.4.2', require: false
 gem 'rack-cors', require: 'rack/cors'
 gem 'clarifai-rails', '~> 0.2.1'
 gem 'rest-client'
-gem 'rack-cors'
 gem 'monkeylearn'
 
 group :development, :test do
