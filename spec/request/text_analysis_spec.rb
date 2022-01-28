@@ -5,8 +5,9 @@ RSpec.describe Api::AnalysesController, type: :request do
   describe ' Safe Text analysis' do
     before do
       post '/api/analyses', params: {
-        analysis: { resource: 'You are a happy person',
-                    category: :text }
+        analysis: 
+{ resource: 'You are a happy person',
+          category: :text }
       }
     end
     
@@ -31,7 +32,7 @@ RSpec.describe Api::AnalysesController, type: :request do
       end
       
       it 'is expected to show confidence in the analysis' do
-        expect(eval_json[0]['confidence']).to eq 0.963
+        expect(eval_json[0]['confidence']).to be > 0.96
       end
     
       it 'is expected to show status profanity' do
