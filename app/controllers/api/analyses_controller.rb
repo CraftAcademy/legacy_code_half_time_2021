@@ -33,8 +33,12 @@ class Api::AnalysesController < ApplicationController
   end
 
   def text_analysis(text)
+    text_as_array = []
+    text_as_array << text
+    text_as_array.flatten!
+    binding.pry
     model_id = 'cl_KFXhoTdt' # Profanity & Abuse Detection
-    response = Monkeylearn.classifiers.classify(model_id, [text])
+    response = Monkeylearn.classifiers.classify(model_id, text_as_array)
     response.body[0]
   end
 
@@ -44,7 +48,7 @@ class Api::AnalysesController < ApplicationController
       .image
       .concepts_with_percent
   rescue StandardError => e
-    error = { message: e.message, error: true }
+    { message: e.message, error: 'true' }
   end
 
   def analysis_category
