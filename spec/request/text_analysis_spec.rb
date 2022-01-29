@@ -1,5 +1,8 @@
 RSpec.describe Api::AnalysesController, type: :request do
   describe "Text analysis" do
+    describe 'successfully' do
+      
+    
     before do
       post "/api/analyses", params: {
        analysis: { resource: "This is awesome",
@@ -16,5 +19,28 @@ RSpec.describe Api::AnalysesController, type: :request do
       ).to eq 'clean'
       
     end
+   end
+   describe 'unsuccesfully ' do
+     describe 'when there is no paramenter' do
+       before do
+        post "/api/analyses", params: {
+         analysis: { resource: "",
+         category: :'' },
+         }
+       end
+       it 'is expect to return no result' do
+        binding.pry
+        expect(response.body['results'].nil?).to eq true
+       end
+        
+      end
+      
+    
+    
+      describe 'when the category param is set to image' do
+      end
+      
+    end
+  
   end
 end

@@ -7,6 +7,7 @@ class Api::AnalysesController < ApplicationController
     analysis = Analysis.create(analysis_params
                                    .merge!(results: @results,
                                            request_ip: request.remote_ip))
+    
     if analysis.persisted?
       render json: analysis
     else
@@ -40,6 +41,9 @@ class Api::AnalysesController < ApplicationController
       .new(url)
       .image
       .concepts_with_percent
+    rescue standardError => e
+    binding.pry
+    error = {error: e.mesage}
   end
 
   def analysis_category
