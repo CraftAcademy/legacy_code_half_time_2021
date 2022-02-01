@@ -8,8 +8,10 @@ class Api::AnalysesController < ApplicationController
                                    .merge!(results: @results,
                                            request_ip: request.remote_ip))
     
-    if analysis.persisted?
+    if analysis.persisted? && analysis.results['error'] == 'false'
       render json: analysis
+    elsif analysis.persisted? && analysis.results['error'] == 'true'
+      render json: analysis.results.error, status: 400
     else
       render json: analysis.errors.full_messages, status: 422
     end
@@ -42,8 +44,8 @@ class Api::AnalysesController < ApplicationController
       .image
       .concepts_with_percent
     rescue standardError => e
-    binding.pry
-    error = {error: e.mesage}
+    {message: e.mesage, error: 'true'}
+
   end
 
   def analysis_category

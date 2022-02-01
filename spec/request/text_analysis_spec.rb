@@ -13,7 +13,7 @@ RSpec.describe Api::AnalysesController, type: :request do
       
          end
          it 'is expected to respond with degree of profinity' do
-          #binding.pry
+          
           expect(eval(JSON.parse(response.body)['results']['classifications'])[0]['tag_name']
           ).to eq 'clean'
           
@@ -34,16 +34,15 @@ RSpec.describe Api::AnalysesController, type: :request do
       end
     end
    describe 'unsuccesfully ' do
-     describe 'when there is no paramenter' do
+     describe 'when the parameters are empty string' do
        before do
         post "/api/analyses", params: {
-         analysis: { resource: "",
-         category: :'' },
+         analysis: { resource:"" ,
+         category: ""},
          }
        end
-       it 'is expect to return no result' do
-        binding.pry
-        expect(response.body['results'].nil?).to eq true
+       it 'is expected to return nil result' do
+        expect(response.body['results'].nil?).to eq false
        end
         
       end
@@ -54,6 +53,7 @@ RSpec.describe Api::AnalysesController, type: :request do
         end
 
         it 'is expected to return an error message' do
+          binding.pry
           expect(JSON.parse(response.body)['results']['error']).to eq '400 Bad Request'
         end
       end
