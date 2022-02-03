@@ -7,7 +7,38 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 require 'rspec/rails'
 require 'spec_helper'
 
-ActiveRecord::Migration.maintain_test_schema!
+# ActiveRecord::Migration.maintain_test_schema!
+
+begin
+  ActiveRecord::Migration.maintain_test_schema!
+rescue ActiveRecord::PendingMigrationError => e
+  puts e.to_s.strip
+  exit 1
+end
+
+module ResponseJSON
+  def response_json
+    JSON.parse(response.body)
+  end
+end
+
+module ResultsJSON
+  def results_json
+    response_json['results']
+  end
+end
+
+module ClassificationJSON
+  def classic_json
+    results_json['classifications']
+  end
+end
+
+module EvaluationJSON
+  def eval_json
+    eval(classic_json)
+  end
+end
 
 RSpec.configure do |config|
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
@@ -23,8 +54,12 @@ RSpec.configure do |config|
   end
 
   config.shared_context_metadata_behavior = :apply_to_host_groups
-
+  
   config.include(Shoulda::Matchers::ActiveRecord, type: :model)
+  config.include ResponseJSON
+  config.include ResultsJSON
+  config.include EvaluationJSON
+  config.include ClassificationJSON
 end
 
 Shoulda::Matchers.configure do |config|
